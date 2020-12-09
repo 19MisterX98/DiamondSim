@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "misterx.diamondgen.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "DummyProfilerMixin",
+    "GameRendererMixin",
+    "MixinBiome",
+    "MixinCofiguredFeature",
+    "MixinOreFeature"
+  ],
+  "client": [
+    "Examplmod"
+  ],
+  "server": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

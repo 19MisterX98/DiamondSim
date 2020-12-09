@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "diamondgen",
+  "version": "${version}",
+  "name": "diamondgen",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/Diamondgen/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+    ],
+    "main": [
+      "misterx.diamondgen.testmixin"
+    ]
+  },
+  "mixins": [
+    "diamondgen.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.10.8",
+    "fabric": "*",
+    "minecraft": "1.16.4"
+  }
+}
