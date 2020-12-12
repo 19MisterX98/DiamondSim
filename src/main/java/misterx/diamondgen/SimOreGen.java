@@ -4,9 +4,9 @@ package misterx.diamondgen;
 import misterx.diamondgen.render.Color;
 import misterx.diamondgen.render.Cube;
 import misterx.diamondgen.render.Renderer;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import sun.jvm.hotspot.oops.Instance;
 
 
 import java.util.ArrayList;
@@ -15,19 +15,27 @@ import java.util.List;
 import java.util.Random;
 
 public class SimOreGen {
-    public static SimOreGen INSTANCE = new SimOreGen();
-    public static SimOreGen get() {return INSTANCE;}
+
     public List<Renderer> renderers = new ArrayList<>();
 
+
+
     public void render() {
+        if(!DiamondGen.active){
+            return;
+        }
         try {
-            this.renderers.forEach(Renderer::render);
+            this.renderers.forEach(renderer -> {
+                if (Util.distanceToPlayer(renderer.getPos()) < DiamondGen.range) {
+                    renderer.render();
+                }
+            });
         } catch (Exception e) {
-            //System.out.println(e);
-        };
+            System.out.println(e);
+        }
     }
 
-    public boolean generate(Random random, BlockPos blockPos) {
+    public boolean generate(Random random, BlockPos blockPos, ClientWorld world) {
         float f = random.nextFloat() * 3.1415927F;
         float g = 1.0F;
         int i = MathHelper.ceil((1.0F / 16.0F * 2.0F + 1.0F) / 2.0F);
@@ -46,7 +54,7 @@ public class SimOreGen {
         for(int s = n; s <= n + q; ++s) {
             for(int t = p; t <= p + q; ++t) {
                 //if (o <= structureWorldAccess.getTopY(Heightmap.Type.OCEAN_FLOOR_WG, s, t)) {
-                    return generateVeinPart(random, d, e, h, j, l, m, n, o, p, q, r);
+                    return generateVeinPart(random, d, e, h, j, l, m, n, o, p, q, r, world);
                 //}
             }
         }
@@ -54,7 +62,7 @@ public class SimOreGen {
         return false;
     }
 
-    protected boolean generateVeinPart(Random random, double startX, double endX, double startZ, double endZ, double startY, double endY, int x, int y, int z, int size, int i) {
+    protected boolean generateVeinPart(Random random, double startX, double endX, double startZ, double endZ, double startY, double endY, int x, int y, int z, int size, int i,ClientWorld world) {
         int j = 0;
         BitSet bitSet = new BitSet(size * i * size);
         BlockPos.Mutable mutable = new BlockPos.Mutable();
@@ -73,7 +81,7 @@ public class SimOreGen {
             r = MathHelper.lerp(f, startZ, endZ);
             s = random.nextDouble() * (double)k / 16.0D;
             double m = ((double)(MathHelper.sin(3.1415927F * f) + 1.0F) * s + 1.0D) / 2.0D;
-            ds[n * 4 + 0] = p;
+            ds[n * 4] = p;
             ds[n * 4 + 1] = q;
             ds[n * 4 + 2] = r;
             ds[n * 4 + 3] = m;
@@ -83,7 +91,7 @@ public class SimOreGen {
             if (ds[n * 4 + 3] > 0.0D) {
                 for(int o = n + 1; o < k; ++o) {
                     if (ds[o * 4 + 3] > 0.0D) {
-                        p = ds[n * 4 + 0] - ds[o * 4 + 0];
+                        p = ds[n * 4 ] - ds[o * 4];
                         q = ds[n * 4 + 1] - ds[o * 4 + 1];
                         r = ds[n * 4 + 2] - ds[o * 4 + 2];
                         s = ds[n * 4 + 3] - ds[o * 4 + 3];
@@ -102,7 +110,7 @@ public class SimOreGen {
         for(n = 0; n < k; ++n) {
             double u = ds[n * 4 + 3];
             if (u >= 0.0D) {
-                double v = ds[n * 4 + 0];
+                double v = ds[n * 4];
                 double w = ds[n * 4 + 1];
                 double aa = ds[n * 4 + 2];
                 int ab = Math.max(MathHelper.floor(v - u), x);
@@ -126,8 +134,9 @@ public class SimOreGen {
                                             bitSet.set(an);
                                             mutable.set(ah, aj, al);
                                             if (mutable.getY() > 0) {
-                                                this.renderers.add(new Cube(mutable,new Color(255, 0, 0)));
-                                                //System.out.println(mutable.toShortString());
+                                                if(world.getBlockState(mutable).isOpaque()) {
+                                                    this.renderers.add(new Cube(mutable, new Color(255, 0, 0)));
+                                                }
                                                 ++j;
                                             }
                                         }

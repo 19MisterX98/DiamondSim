@@ -13,7 +13,7 @@
     "client": [
     ],
     "main": [
-      "misterx.diamondgen.testmixin"
+      "misterx.diamondgen.DiamondGen"
     ]
   },
   "mixins": [
