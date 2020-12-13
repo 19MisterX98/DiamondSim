@@ -4,6 +4,7 @@ import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.seed.ChunkSeeds;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Random;
@@ -11,13 +12,13 @@ import java.util.Random;
 public class StartGen {
     public SimOreGen simOreGen = new SimOreGen();
     public ClientWorld world = MinecraftClient.getInstance().world;
+    public PlayerEntity player = MinecraftClient.getInstance().player;
     public ChunkGenerated chunkList = new ChunkGenerated();
-    private long currentSeed = 0L;
+    public long currentSeed = 0L;
 
     StartGen(long seed) {
         this.currentSeed = seed;
     }
-    public void setCurrentSeed(long seed) {this.currentSeed = seed;}
 
     public void getStartingPos(int BlockX, int BlockZ) {
         if(!chunkList.Check(BlockX,BlockZ)) {

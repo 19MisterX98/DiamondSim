@@ -4,13 +4,13 @@
   "package": "misterx.diamondgen.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-
   ],
   "client": [
+    "ClientPlayerEntityMixin",
     "ClientPlayNetworkHandlerMixin",
+    "ClientWorldMixin",
     "DummyProfilerMixin",
-    "GameRendererMixin",
-    "ClientPlayerEntityMixin"
+    "GameRendererMixin"
   ],
   "server": [
   ],

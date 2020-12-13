@@ -7,20 +7,21 @@ import net.minecraft.util.math.BlockPos;
 
 public class Util {
     private static final MinecraftClient client = MinecraftClient.getInstance();
-    private static final PlayerEntity player = MinecraftClient.getInstance().player;
 
     public static int distanceToPlayer(BlockPos posOre) {
-        assert player != null;
-        BlockPos posPlayer = player.getBlockPos();
-        int x = Math.abs(Math.abs(posOre.getX())-Math.abs(posPlayer.getX()));
-        int z = Math.abs(Math.abs(posOre.getZ())-Math.abs(posPlayer.getZ()));
-        return x + z;
+        if(client.player != null) {
+            BlockPos posPlayer = client.player.getBlockPos();
+            int x = Math.abs(Math.abs(posOre.getX()) - Math.abs(posPlayer.getX()));
+            int z = Math.abs(Math.abs(posOre.getZ()) - Math.abs(posPlayer.getZ()));
+            return x + z;
+        }
+        return 1001;
     }
     public static void reload() {
         int renderdistance = client.options.viewDistance;
 
-        int playerChunkX = (int) (Math.round(player.getX()) >> 4);
-        int playerChunkZ = (int) (Math.round(player.getZ()) >> 4);
+        int playerChunkX = (int) (Math.round(client.player.getX()) >> 4);
+        int playerChunkZ = (int) (Math.round(client.player.getZ()) >> 4);
         for(int i = playerChunkX - renderdistance;i < playerChunkX + renderdistance; i++) {
             for(int j = playerChunkZ - renderdistance;j < playerChunkZ + renderdistance; j++) {
                 DiamondGen.gen.getStartingPos(i << 4,j<<4);
@@ -28,8 +29,8 @@ public class Util {
         }
     }
      public static boolean isOpaque(BlockPos pos) {
-        if(client.world != null) {
-            return client.world.getBlockState(pos).isOpaque();
+        if(DiamondGen.gen.world != null) {
+            return DiamondGen.gen.world.getBlockState(pos).isOpaque();
         }
         return false;
     }
