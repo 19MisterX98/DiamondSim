@@ -2,6 +2,7 @@ package misterx.diamondgen;
 
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.seed.ChunkSeeds;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.BlockPos;
 
@@ -9,8 +10,8 @@ import java.util.Random;
 
 public class StartGen {
     public SimOreGen simOreGen = new SimOreGen();
+    public ClientWorld world = MinecraftClient.getInstance().world;
     public ChunkGenerated chunkList = new ChunkGenerated();
-
     private long currentSeed = 0L;
 
     StartGen(long seed) {
@@ -18,7 +19,7 @@ public class StartGen {
     }
     public void setCurrentSeed(long seed) {this.currentSeed = seed;}
 
-    public void getStartingPos(int BlockX, int BlockZ, ClientWorld world) {
+    public void getStartingPos(int BlockX, int BlockZ) {
         if(!chunkList.Check(BlockX,BlockZ)) {
             return;
         }
@@ -31,7 +32,6 @@ public class StartGen {
 
 
         BlockPos blockPos = new BlockPos(x,y,z);
-        //System.out.println(blockPos.toShortString());
-        simOreGen.generate(random,blockPos,world);
+        simOreGen.generate(random,blockPos,DiamondGen.gen.world);
     }
 }

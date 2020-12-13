@@ -8,6 +8,17 @@ import net.minecraft.client.MinecraftClient;
 public class DiamondGen implements ModInitializer {
     public static int range = 100;
     public static boolean active = true;
+
+    public static boolean isOpaque() {
+        return opaque;
+    }
+
+    public static void setOpaque(boolean opaque) {
+        DiamondGen.opaque = opaque;
+    }
+
+    private static boolean opaque = false;
+
     public static StartGen gen = new StartGen(0);
     @Override
     public void onInitialize() {

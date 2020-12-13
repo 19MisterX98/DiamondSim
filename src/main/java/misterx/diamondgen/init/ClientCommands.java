@@ -3,10 +3,7 @@ package misterx.diamondgen.init;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import misterx.diamondgen.commands.ActiveCommand;
-import misterx.diamondgen.commands.ClientCommand;
-import misterx.diamondgen.commands.RangeCommand;
-import misterx.diamondgen.commands.SeedCommand;
+import misterx.diamondgen.commands.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.command.CommandException;
@@ -26,12 +23,14 @@ public class ClientCommands {
     public static SeedCommand SEED;
     public static RangeCommand RANGE;
     public static ActiveCommand ACTIVE;
+    public static OpaqueCommand OPAQUE;
 
 
     static {
         COMMANDS.add(SEED = new SeedCommand());
         COMMANDS.add(RANGE = new RangeCommand());
         COMMANDS.add(ACTIVE = new ActiveCommand());
+        COMMANDS.add(OPAQUE = new OpaqueCommand());
     }
 
     public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher) {

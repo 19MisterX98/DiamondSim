@@ -4,8 +4,6 @@ package misterx.diamondgen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 
 public class Util {
     private static final MinecraftClient client = MinecraftClient.getInstance();
@@ -25,8 +23,14 @@ public class Util {
         int playerChunkZ = (int) (Math.round(player.getZ()) >> 4);
         for(int i = playerChunkX - renderdistance;i < playerChunkX + renderdistance; i++) {
             for(int j = playerChunkZ - renderdistance;j < playerChunkZ + renderdistance; j++) {
-                DiamondGen.gen.getStartingPos(i << 4,j<<4,client.world);
+                DiamondGen.gen.getStartingPos(i << 4,j<<4);
             }
         }
+    }
+     public static boolean isOpaque(BlockPos pos) {
+        if(client.world != null) {
+            return client.world.getBlockState(pos).isOpaque();
+        }
+        return false;
     }
 }

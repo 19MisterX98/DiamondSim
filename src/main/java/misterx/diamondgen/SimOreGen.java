@@ -27,11 +27,17 @@ public class SimOreGen {
         try {
             this.renderers.forEach(renderer -> {
                 if (Util.distanceToPlayer(renderer.getPos()) < DiamondGen.range) {
-                    renderer.render();
+                    if(DiamondGen.isOpaque()) {
+                        if (Util.isOpaque(renderer.getPos())){
+                            renderer.render();
+                        }
+                    }else {
+                        renderer.render();
+                    }
                 }
             });
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -134,9 +140,7 @@ public class SimOreGen {
                                             bitSet.set(an);
                                             mutable.set(ah, aj, al);
                                             if (mutable.getY() > 0) {
-                                                if(world.getBlockState(mutable).isOpaque()) {
-                                                    this.renderers.add(new Cube(mutable, new Color(255, 0, 0)));
-                                                }
+                                                this.renderers.add(new Cube(mutable, new Color(255, 0, 0)));
                                                 ++j;
                                             }
                                         }

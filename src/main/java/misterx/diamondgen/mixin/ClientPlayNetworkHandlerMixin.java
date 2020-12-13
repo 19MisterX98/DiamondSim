@@ -21,14 +21,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public class ClientPlayNetworkHandlerMixin {
-    @Shadow private ClientWorld world;
     @Shadow private CommandDispatcher<CommandSource> commandDispatcher;
 
     @Inject(method = "onChunkData", at = @At(value = "TAIL"))
     private void onChunkData(ChunkDataS2CPacket packet, CallbackInfo ci) {
         int posX = packet.getX() << 4;
         int posZ = packet.getZ() << 4;
-        DiamondGen.gen.getStartingPos(posX, posZ,world);
+        DiamondGen.gen.getStartingPos(posX, posZ);
     }
 
     @SuppressWarnings("unchecked")
