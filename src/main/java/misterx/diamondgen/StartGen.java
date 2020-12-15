@@ -24,7 +24,13 @@ public class StartGen {
         if(!chunkList.Check(BlockX,BlockZ)) {
             return;
         }
-        long decSeed = ChunkSeeds.getDecoratorSeed(this.currentSeed,BlockX,BlockZ,9,6, MCVersion.v1_16_2);
+        int step;
+        if(DiamondGen.ver.equals("1.16")) {
+            step = 6;
+        } else {
+            step = 4;
+        }
+        long decSeed = ChunkSeeds.getDecoratorSeed(this.currentSeed, BlockX, BlockZ, 9, step, MCVersion.v1_14_4);
         Random random = new Random();
         random.setSeed(decSeed);
         int x = random.nextInt(16)+BlockX;

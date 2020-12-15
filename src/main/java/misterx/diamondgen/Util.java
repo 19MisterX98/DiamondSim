@@ -2,7 +2,6 @@ package misterx.diamondgen;
 
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class Util {
@@ -11,9 +10,11 @@ public class Util {
     public static int distanceToPlayer(BlockPos posOre) {
         if(client.player != null) {
             BlockPos posPlayer = client.player.getBlockPos();
-            int x = Math.abs(Math.abs(posOre.getX()) - Math.abs(posPlayer.getX()));
-            int z = Math.abs(Math.abs(posOre.getZ()) - Math.abs(posPlayer.getZ()));
-            return x + z;
+
+            int x = Math.abs(posPlayer.getX()-posOre.getX());
+            int z = Math.abs(posPlayer.getZ()-posOre.getZ());
+
+            return x+z;
         }
         return 1001;
     }

@@ -10,6 +10,16 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+repositories {
+    // Use jcenter for resolving dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+    mavenCentral()
+    maven {
+        url "https://jitpack.io"
+    }
+}
+
 dependencies {
     //to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -21,7 +31,6 @@ dependencies {
 
     implementation('com.github.KaptainWutax:MathUtils:6c2d50eacad0241ff76119e6e703b70bac4b4bce') {transitive = false}
     implementation('com.github.KaptainWutax:SeedUtils:0de70bc772fef95d8acfa6991e7278ee53a8b46c') {transitive = false}
-
 
     include('com.github.KaptainWutax:MathUtils:6c2d50eacad0241ff76119e6e703b70bac4b4bce') {transitive = false}
     include('com.github.KaptainWutax:SeedUtils:0de70bc772fef95d8acfa6991e7278ee53a8b46c') {transitive = false}
@@ -39,15 +48,7 @@ processResources {
         exclude "fabric.mod.json"
     }
 }
-repositories {
-    // Use jcenter for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    jcenter()
-    mavenCentral()
-    maven {
-        url "https://jitpack.io"
-    }
-}
+
 
 // ensure that the encoding is set to UTF-8, no matter what the system default is
 // this fixes some edge cases with special characters not displaying correctly

@@ -24,6 +24,7 @@ public class ClientCommands {
     public static RangeCommand RANGE;
     public static ActiveCommand ACTIVE;
     public static OpaqueCommand OPAQUE;
+    public static VersionCommand VERSION;
 
 
     static {
@@ -31,6 +32,7 @@ public class ClientCommands {
         COMMANDS.add(RANGE = new RangeCommand());
         COMMANDS.add(ACTIVE = new ActiveCommand());
         COMMANDS.add(OPAQUE = new OpaqueCommand());
+        COMMANDS.add(VERSION = new VersionCommand());
     }
 
     public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
