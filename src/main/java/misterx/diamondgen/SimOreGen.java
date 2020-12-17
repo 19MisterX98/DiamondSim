@@ -4,9 +4,12 @@ package misterx.diamondgen;
 import misterx.diamondgen.render.Color;
 import misterx.diamondgen.render.Cube;
 import misterx.diamondgen.render.Renderer;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.dimension.DimensionType;
 
 
 import java.util.ArrayList;
@@ -17,7 +20,7 @@ import java.util.Random;
 public class SimOreGen {
 
     public List<Renderer> renderers = new ArrayList<>();
-
+    public ClientWorld world = MinecraftClient.getInstance().world;
 
 
     public void render() {
@@ -25,42 +28,55 @@ public class SimOreGen {
             return;
         }
         try {
-            this.renderers.forEach(renderer -> {
-                if (Util.distanceToPlayer(renderer.getPos()) < DiamondGen.range) {
-                    if(DiamondGen.isOpaque()) {
-                        if (Util.isOpaque(renderer.getPos())){
+            if (isOverworld(DiamondGen.gen.world.getDimension())) {
+                this.renderers.forEach(renderer -> {
+                    if (Util.distanceToPlayer(renderer.getPos()) < DiamondGen.range) {
+                        if (DiamondGen.isOpaque()) {
+                            if (Util.isOpaque(renderer.getPos())) {
+                                renderer.render();
+                            }
+                        } else {
                             renderer.render();
                         }
-                    }else {
-                        renderer.render();
                     }
-                }
-            });
+                });
+            }else if(isNether(DiamondGen.gen.world.getDimension())) {
+                DiamondGen.gen.simDebrisGen.renderers.forEach(renderer -> {
+                    if (Util.distanceToPlayer(renderer.getPos()) < DiamondGen.range) {
+                        if (DiamondGen.isOpaque()) {
+                            if (Util.isOpaque(renderer.getPos())) {
+                                renderer.render();
+                            }
+                        } else {
+                            renderer.render();
+                        }
+                    }
+                });
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public boolean generate(Random random, BlockPos blockPos, ClientWorld world) {
+    public boolean generate(Random random, BlockPos blockPos, ClientWorld world,int size) {
         float f = random.nextFloat() * 3.1415927F;
-        float g = 1.0F;
-        int i = MathHelper.ceil((1.0F / 16.0F * 2.0F + 1.0F) / 2.0F);
-        double d = (double)blockPos.getX() + Math.sin(f) * (double)g;
-        double e = (double)blockPos.getX() - Math.sin(f) * (double)g;
-        double h = (double)blockPos.getZ() + Math.cos(f) * (double)g;
-        double j = (double)blockPos.getZ() - Math.cos(f) * (double)g;
-        double l = (blockPos.getY() + random.nextInt(3) - 2);
-        double m = (blockPos.getY() + random.nextInt(3) - 2);
+        float g = (float)size / 8.0F;
+        int i = MathHelper.ceil(((float)size / 16.0F * 2.0F + 1.0F) / 2.0F);
+        double d = (double)blockPos.getX() + Math.sin((double)f) * (double)g;
+        double e = (double)blockPos.getX() - Math.sin((double)f) * (double)g;
+        double h = (double)blockPos.getZ() + Math.cos((double)f) * (double)g;
+        double j = (double)blockPos.getZ() - Math.cos((double)f) * (double)g;
+        double l = (double)(blockPos.getY() + random.nextInt(3) - 2);
+        double m = (double)(blockPos.getY() + random.nextInt(3) - 2);
         int n = blockPos.getX() - MathHelper.ceil(g) - i;
         int o = blockPos.getY() - 2 - i;
         int p = blockPos.getZ() - MathHelper.ceil(g) - i;
         int q = 2 * (MathHelper.ceil(g) + i);
         int r = 2 * (2 + i);
-
         for(int s = n; s <= n + q; ++s) {
             for(int t = p; t <= p + q; ++t) {
                 //if (o <= structureWorldAccess.getTopY(Heightmap.Type.OCEAN_FLOOR_WG, s, t)) {
-                    return generateVeinPart(random, d, e, h, j, l, m, n, o, p, q, r, world);
+                    return generateVeinPart(random, d, e, h, j, l, m, n, o, p, q, r, world, size);
                 //}
             }
         }
@@ -68,11 +84,11 @@ public class SimOreGen {
         return false;
     }
 
-    protected boolean generateVeinPart(Random random, double startX, double endX, double startZ, double endZ, double startY, double endY, int x, int y, int z, int size, int i,ClientWorld world) {
+    protected boolean generateVeinPart(Random random, double startX, double endX, double startZ, double endZ, double startY, double endY, int x, int y, int z, int size, int i,ClientWorld world,int veinSize) {
         int j = 0;
         BitSet bitSet = new BitSet(size * i * size);
         BlockPos.Mutable mutable = new BlockPos.Mutable();
-        int k = 8;
+        int k = veinSize;
         double[] ds = new double[k * 4];
 
         int n;
@@ -154,5 +170,16 @@ public class SimOreGen {
         }
 
         return j > 0;
+    }
+    private boolean isOverworld(DimensionType dimension) {
+        return ((DimensionTypeCaller)dimension).getInfiniburn().getPath().endsWith("overworld");
+    }
+
+    private boolean isNether(DimensionType dimension) {
+        return ((DimensionTypeCaller)dimension).getInfiniburn().getPath().endsWith("nether");
+    }
+
+    public interface DimensionTypeCaller {
+        Identifier getInfiniburn();
     }
 }

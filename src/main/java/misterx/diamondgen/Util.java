@@ -2,7 +2,9 @@ package misterx.diamondgen;
 
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.dimension.DimensionType;
 
 public class Util {
     private static final MinecraftClient client = MinecraftClient.getInstance();

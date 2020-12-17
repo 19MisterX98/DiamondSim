@@ -9,6 +9,7 @@
     "ClientPlayerEntityMixin",
     "ClientPlayNetworkHandlerMixin",
     "ClientWorldMixin",
+    "DimensionTypeMixin",
     "DummyProfilerMixin",
     "GameRendererMixin"
   ],

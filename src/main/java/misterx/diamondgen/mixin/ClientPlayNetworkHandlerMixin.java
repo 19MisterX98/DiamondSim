@@ -7,11 +7,11 @@ import misterx.diamondgen.init.ClientCommands;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.command.CommandSource;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import net.minecraft.network.packet.s2c.play.CommandTreeS2CPacket;
+import net.minecraft.network.packet.s2c.play.GameJoinS2CPacket;
 import net.minecraft.server.command.ServerCommandSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,10 +23,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ClientPlayNetworkHandlerMixin {
     @Shadow private CommandDispatcher<CommandSource> commandDispatcher;
 
+    @Shadow private MinecraftClient client;
+
     @Inject(method = "onChunkData", at = @At(value = "TAIL"))
     private void onChunkData(ChunkDataS2CPacket packet, CallbackInfo ci) {
         int posX = packet.getX() << 4;
         int posZ = packet.getZ() << 4;
+        DiamondGen.gen.world = this.client.world;
         DiamondGen.gen.getStartingPos(posX, posZ);
     }
 
@@ -40,5 +43,9 @@ public class ClientPlayNetworkHandlerMixin {
     @Inject(method = "onCommandTree", at = @At("TAIL"))
     public void onOnCommandTree(CommandTreeS2CPacket packet, CallbackInfo ci) {
         ClientCommands.registerCommands((CommandDispatcher<ServerCommandSource>)(Object)this.commandDispatcher);
+    }
+    @Inject(method = "onGameJoin",at = @At("TAIL"))
+    private void onGameJoin(GameJoinS2CPacket packet, CallbackInfo ci){
+        DiamondGen.clear(DiamondGen.gen.currentSeed);
     }
 }
