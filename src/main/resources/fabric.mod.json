@@ -3,8 +3,8 @@
   "id": "diamondgen",
   "version": "${version}",
   "name": "diamondgen",
-  "description": "",
-  "authors": [],
+  "description": "Find diamonds and ancient debris using seed",
+  "authors": ["19MisterX98"],
   "contact": {},
   "license": "MIT",
   "icon": "assets/Diamondgen/icon.png",
@@ -21,6 +21,6 @@
   ],
   "depends": {
     "fabricloader": ">=0.10.8",
-    "minecraft": "1.16.4"
+    "minecraft": ">=1.16"
   }
 }
