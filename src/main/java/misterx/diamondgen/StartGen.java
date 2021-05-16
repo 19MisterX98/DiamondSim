@@ -49,6 +49,9 @@ public class StartGen {
     public void ancienDebris(int BlockX,int BlockZ){
         NetherBiomeSource netherBiomeSource = new NetherBiomeSource(MCVersion.v1_16_2,currentSeed);
         Biome biome = netherBiomeSource.getBiome(BlockX+8,0,BlockZ+8);
+        if(biome.getName().equals("soul_sand_valley")){
+            return;
+        }
         int index = 15;
         if(biome.getName().equals("warped_forest")) {
             index = 13;
